@@ -55,7 +55,7 @@ class EmailValidator < ActiveModel::EachValidator
     protected
 
     def loose_regexp(options = {})
-      return /\A[^\s]+@[^\s]+\z/ if options[:domain].nil?
+      return /\A[^\s]+@[^\s]+\z/ if options[:domain].nil? && !options[:require_fqdn]
       /\A[^\s]+@#{domain_part_pattern(options)}\z/
     end
 

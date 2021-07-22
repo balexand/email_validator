@@ -764,6 +764,28 @@ RSpec.describe EmailValidator do
       end
     end
 
+    context 'when `require_fqdn` is explicitly enabled' do
+      let(:opts) { { :require_fqdn => true } }
+
+      context 'when given a valid hostname-only email' do
+        let(:email) { 'someuser@somehost' }
+
+        context 'when in `:loose` mode (the default)' do
+          it 'is invalid using EmailValidator.valid?' do
+            expect(described_class).not_to be_valid(email, opts)
+          end
+
+          it 'is invalid using EmailValidator.invalid?' do
+            expect(described_class).to be_invalid(email, opts)
+          end
+
+          it 'does not match the regexp' do
+            expect(!!(email =~ described_class.regexp(opts))).to be(false)
+          end
+        end
+      end
+    end
+
     context 'when `require_fqdn` is explicitly disabled' do
       let(:opts) { { :require_fqdn => false } }
 
